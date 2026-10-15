@@ -1,0 +1,62 @@
+{
+  "categories": [
+    {
+      "name": "Event Visuals",
+      "items": [
+        "Poster",
+        "Anticipation poster",
+        "Ticket",
+        "Confirmation (1x)",
+        "Countdown (1x)",
+        "Motion poster",
+        "Event reel video (30sec)",
+        "Event reel video (1min)"
+      ]
+    },
+    {
+      "name": "Visuals for Artists",
+      "items": [
+        "Single art cover",
+        "EP & tracklist",
+        "Motion cover",
+        "Lyrics animation (1-2mins)",
+        "Lyrics animation (2-4min)"
+      ]
+    },
+    {
+      "name": "Social Media Visuals",
+      "items": [
+        "Flyer",
+        "Motion flyer",
+        "5 x social media post design",
+        "10 x social media post design"
+      ]
+    },
+    {
+      "name": "Stationery",
+      "items": [
+        "Business card",
+        "Letter head",
+        "Envelope",
+        "Rate card"
+      ]
+    },
+    {
+      "name": "Video Services",
+      "items": [
+        "30secs motion ads",
+        "1min motion ads",
+        "Logo animation"
+      ]
+    },
+    {
+      "name": "Logo / Brand Identity",
+      "items": [
+        "Basic package",
+        "Standard package",
+        "Deluxe package",
+        "Custom package"
+      ]
+    }
+  ]
+}
