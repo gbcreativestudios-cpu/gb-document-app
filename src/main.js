@@ -94,6 +94,32 @@ function items(){const st=S[cur],el=$("items");el.innerHTML=st.items.map((it,i)=
 const HEAD=()=>`<div class="hd"><img class="lg" src="${DOCLOGO}" alt="Logo"><div class="ad">Osun, Nigeria.<small>gbcreativestudios@gmail.com<br>+2348169804368</small></div></div><div class="st"></div>`;
 const FOOT=`<div class="ft"><i></i><span><b>RC:</b> 9295569</span></div>`;
 function paper(){const t=cur,s=S[t],c=s.cur;let h=HEAD(),warn="";
+ if(t==="receipt"){
+  const rows=s.items.map(i=>{const q=parseFloat(i.q)||0,u=mn(i.p);return{d:i.d,q,u,a:Math.round(q*u),e:i.p===""}});
+  const total=rows.reduce((a,r)=>a+r.a,0),paid=mn(s.paid),balance=Math.max(0,total-paid);
+  const full=total>0&&paid>=total,lines=(s.cd||"").split("\n").filter(Boolean);
+  const state=full?"PAID":"PART PAYMENT";
+  const info=(label,value)=>`<div><span>${label}</span><strong>${value||"—"}</strong></div>`;
+  h+=`<div class="rc-head"><div><h1>RECEIPT</h1><div class="rc-doc-meta"><span>${esc(s.no)}</span><span>${dfmt(s.date)}</span></div></div></div>
+  <div class="rc-amount"><span>AMOUNT RECEIVED</span><strong>${fm(paid,c)}</strong></div>
+  <div class="rc-meta">
+   <div><span>RECEIVED FROM</span><strong>${esc(s.cn)||"—"}</strong>${lines.length?`<p>${lines.map(esc).join("<br>")}</p>`:""}</div>
+   ${info("DATE RECEIVED",dfmt(s.date))}
+   ${info("PAYMENT METHOD",esc(s.meth))}
+   ${info("REFERENCE",esc(s.ref))}
+   ${info("INVOICE",esc(s.inv))}
+   ${s.acc?info("ACCOUNT",esc(s.acc)):""}
+  </div>
+  <div class="rc-for"><span class="rc-label">PAYMENT FOR</span>
+   <div class="rc-for-list">${rows.map((r,i)=>`<div><span>${r.q>1?`${r.q} × `:""}${esc(r.d)||"—"}</span>${i===0?`<strong>${state}</strong>`:""}</div>`).join("")}</div>
+  </div>
+  <p class="rc-confirm">${full?"This receipt confirms that the amount shown above has been received in full.":`This receipt confirms a payment of ${fm(paid,c)} against invoice ${esc(s.inv)}. Remaining balance: ${fm(balance,c)}.`}</p>
+  <div class="rc-thanks">THANK YOU FOR YOUR PAYMENT.</div>`;
+  if(paid<=0||paid>total)warn="Amount received must be above zero and not more than the total.";
+  if(rows.some(r=>r.e))warn=(warn?warn+" ":"")+"Some lines have no price yet.";
+  $("paper").className="rc";$("paper").innerHTML=h+FOOT;
+  const w=$("bw");if(w)w.innerHTML=warn?`<div class="warn">${esc(warn)}</div>`:"";fit();return
+ }
  if(DOCS[t].items){
   const rows=s.items.map(i=>{const q=parseFloat(i.q)||0,u=mn(i.p);return{d:i.d,q,u,a:Math.round(q*u),e:i.p===""}});
   const sub=rows.reduce((a,r)=>a+r.a,0),vr=parseFloat(s.vat)||0,vat=Math.round(sub*vr/100),tot=sub+vat,paid=mn(s.paid),bal=tot-paid;
@@ -132,3 +158,4 @@ window.addEventListener("resize",fit);
 window.addEventListener("beforeprint",()=>{const p=$("paper");if(!p)return;p.style.transform="scale(1.3333)";const W=p.offsetWidth,H=Math.max(p.offsetHeight,1);let st=document.getElementById("pgs");if(!st){st=document.createElement("style");st.id="pgs";document.head.appendChild(st)}st.textContent=`@media print{@page{size:${W}pt ${H}pt;margin:0}.pvw{width:${W*4/3}px!important;height:${H*4/3}px!important}}`});window.addEventListener("afterprint",()=>{fit();if(cur==="invoice"){const m=String(S.invoice.no||"").match(/(\d+)\s*$/);INV=(m?parseInt(m[1],10):INV)+1;saveINV();invTouched=false;S.invoice.no=invNo();const e=document.querySelector('[data-k="no"]');if(e)e.value=S.invoice.no;paper()}});
 $("dl").onclick=()=>{const s=S[cur];document.title=(s.no||DOCS[cur].n)+" - GB Studios";window.print()};
 render();
+
