@@ -57,6 +57,25 @@ tr{break-inside:avoid}tbody tr:nth-child(1) td{height:41px}tbody tr:nth-child(2)
 .pi{margin:92px 0 0 74px;flex:none}.pi h3{font-size:20px;font-weight:600;line-height:24px;letter-spacing:-.02em}
 .pi dl{margin:8px 0 0;display:grid;grid-template-columns:155px 1fr;line-height:23.5px;font-size:12px}.pi dt,.pi dd{margin:0}.pi dd.b{font-weight:700}
 .pi .tx{margin:20px 0 0;max-width:640px;line-height:21px;font-size:11px;white-space:pre-wrap}
+/* Receipt layout follows the supplied reference while keeping the existing Inter type and GB header/footer. */
+#paper.rc .rc-head{margin:64px 75px 0;display:flex;justify-content:flex-end;flex:none}
+#paper.rc .rc-head h1{font-size:31px;font-weight:600;line-height:34px;letter-spacing:-.02em;text-align:right}
+#paper.rc .rc-doc-meta{display:grid;gap:3px;margin-top:3px;color:#777;font-size:12px;line-height:16px;text-align:right}
+#paper.rc .rc-amount{height:160px;margin:22px 75px 0;background:#eee;display:flex;flex-direction:column;align-items:center;justify-content:center;flex:none}
+#paper.rc .rc-amount span,.rc-label,#paper.rc .rc-meta>div>span{font-size:11px;letter-spacing:.08em;color:#777}
+#paper.rc .rc-amount strong{margin-top:13px;font-size:34px;font-weight:600;line-height:40px;letter-spacing:-.02em}
+#paper.rc .rc-meta{display:grid;grid-template-columns:1fr 1fr;column-gap:48px;row-gap:22px;margin:44px 82px 0;flex:none}
+#paper.rc .rc-meta>div{min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:3px}
+#paper.rc .rc-meta strong{font-size:14px;font-weight:600;line-height:18px;overflow-wrap:anywhere}
+#paper.rc .rc-meta p{margin:0;color:#666;font-size:12px;line-height:17px}
+#paper.rc .rc-for{margin:31px 82px 0;flex:none}
+#paper.rc .rc-label{display:block;margin-bottom:8px}
+#paper.rc .rc-for-list{border-top:1px solid #ddd}
+#paper.rc .rc-for-list>div{min-height:35px;border-bottom:1px solid #ddd;display:flex;align-items:center;justify-content:space-between;gap:16px;font-size:13px;line-height:18px}
+#paper.rc .rc-for-list>div>span{overflow-wrap:anywhere}
+#paper.rc .rc-for-list strong{flex:none;font-size:12px;font-weight:600}
+#paper.rc .rc-confirm{margin:17px 82px 0;color:#666;font-size:11px;line-height:18px;flex:none}
+#paper.rc .rc-thanks{margin:17px 82px 0;color:#b48845;font-size:12px;font-weight:600;letter-spacing:.1em;line-height:18px;flex:none}
 .ft{margin-top:auto;padding:30px 0 54px 75px;display:flex;align-items:center;gap:12px;font-size:14px;font-weight:300;flex:none;height:99px;align-items:flex-end}
 .ft i{width:15px;height:15px;background:linear-gradient(135deg,#6A2BB0,#9A2A85)}.ft b{font-weight:600}.ft span{line-height:15px}
 .ti{margin:58px 0 0 58px;font-size:40px;font-weight:500;letter-spacing:-.012em;line-height:48px;flex:none}
@@ -78,3 +97,4 @@ td{padding-top:11px;padding-bottom:11px;line-height:18px;vertical-align:middle}t
  .pvw{box-shadow:none;border-radius:0;margin:0;overflow:visible}
  #paper{transform:scale(1.3333)!important}
 }
+
