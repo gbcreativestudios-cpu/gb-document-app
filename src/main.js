@@ -39,12 +39,12 @@ function amountWords(m,c){m=Math.abs(m);const major=Math.floor(m/100),minor=m%10
 const in14=()=>new Date(Date.now()+12096e5).toISOString().slice(0,10);
 const CL2=[{k:"cn",l:"Client name",d:"Mrs Adaeze Okafor"},{k:"cd",l:"Client details (one per line)",t:"area",r:3,d:"Lumen Events Ltd.\nLagos, Nigeria\n+234 801 234 5678"}];
 const CLAUSES=DEF.agreement_clauses;
-const DEFIT={receipt:[{d:"Event poster package — 50% upfront payment",q:1,p:""}],quotation:[{d:"Poster",q:1,p:""},{d:"Anticipation poster",q:1,p:""},{d:"Motion poster",q:1,p:""}]};
+const DEFIT={quotation:[{d:"Poster",q:1,p:""},{d:"Anticipation poster",q:1,p:""},{d:"Motion poster",q:1,p:""}]};
 const CUR={k:"cur",l:"Currency (choose explicitly)",t:"sel",o:["NGN","USD","EUR","GBP"],d:"NGN"};
 const CL=[{k:"cn",l:"Client name",d:""},{k:"cd",l:"Client details (one per line)",t:"area",r:3,d:""}];
 const DOCS={
 invoice:{n:"Invoice",items:1,f:[{k:"no",l:"Invoice number",d:"INV0080"},{k:"date",l:"Date",t:"date",d:today()},{k:"due",l:"Due date",d:"ON RECEIPT"},CUR,...CL,{k:"vat",l:"VAT %",t:"num",d:"0"},{k:"paid",l:"Amount paid",t:"num",d:"0"},{k:"pay",l:"Payment type",t:"sel",o:["PART PAYMENT","FULL PAYMENT","(none ticked)"],d:"(none ticked)"}]},
-receipt:{n:"Receipt",items:1,f:[{k:"no",l:"Receipt number",d:"REC0001"},{k:"date",l:"Payment date",t:"date",d:today()},{k:"inv",l:"Related invoice",d:"INV0080"},CUR,...CL2,{k:"paid",l:"Amount actually received",t:"num",d:"0"},{k:"pay",l:"Payment type",t:"sel",o:["Auto","PART PAYMENT","FULL PAYMENT"],d:"Auto"},{k:"meth",l:"Payment method",d:"Bank transfer"},{k:"ref",l:"Transaction reference (optional)",d:""},{k:"acc",l:"Account credited (optional)",d:""}]},
+receipt:{n:"Receipt",f:[{k:"no",l:"Receipt number",d:"REC0001"},{k:"date",l:"Payment date",t:"date",d:today()},{k:"inv",l:"Related invoice",d:"INV0080"},CUR,...CL2,{k:"desc",l:"Payment for (description)",t:"area",r:3,d:"Event poster package — 50% upfront payment"},{k:"paid",l:"Amount actually received",t:"num",d:"0"},{k:"tot",l:"Invoice total (optional — used for remaining balance)",t:"num",d:""},{k:"pay",l:"Payment type",t:"sel",o:["Auto","PART PAYMENT","FULL PAYMENT"],d:"Auto"},{k:"meth",l:"Payment method",d:"Bank transfer"},{k:"ref",l:"Transaction reference (optional)",d:""},{k:"acc",l:"Account credited (optional)",d:""}]},
 proposal:{n:"Proposal",f:[{k:"title",l:"Title",d:"Visual Proposal & Quotation"},{k:"sub",l:"Project (italic subtitle)",d:"Lumen Night Live – Hosted by Lumen Events"},{k:"cn",l:"Prepared for",d:"Mrs Adaeze Okafor, Lumen Events Ltd."},{k:"date",l:"Date",t:"date",d:today()},{k:"valid",l:"Valid until",t:"date",d:in14()},{k:"ov",l:"Project overview (optional)",t:"area",r:4,d:"GB Studios will design the complete visual campaign for Lumen Night Live, from the first announcement to the final thank-you post, so the event looks consistent across social media, print and screens."},{k:"list",l:"Deliverables — one per line; start a line with # for a group heading",t:"area",r:12,d:"# Announcement & Promotion\nArtist announcement poster\nMain event poster\nTicket announcement poster\nLineup poster (complete list of performers)\n# Motion Visuals\nMotion event poster (post + story formats)\nCountdown motion visuals (7-day sequence)\n# Event Day & After\nFinal reminder poster\nThank You poster"},{k:"cur",l:"Currency (single currency)",t:"sel",o:["USD","NGN","EUR","GBP"],d:"USD"},{k:"price",l:"Total price (you enter it)",t:"num",d:""},{k:"dep",l:"Upfront payment %",t:"num",d:"50"},{k:"time",l:"Project timeline",d:"6 Weeks (until the end of the event)"},{k:"ms",l:"Milestones (optional, one per line)",t:"area",r:3,d:""},{k:"terms",l:"Key terms (one per line)",t:"area",r:6,d:DEF.proposal_terms},{k:"acc",l:"Acceptance note",t:"area",r:3,d:DEF.acceptance}]},
 agreement:{n:"Agreement",f:[{k:"title",l:"Title",d:"Service Agreement"},{k:"sub",l:"Reference / date line",d:"Agreement for Event Visuals – Lumen Night Live"},{k:"pa",l:"Party A (details)",t:"area",r:3,d:"GB Studios Ltd.\nRC: 9295569\nOsun, Nigeria."},{k:"pb",l:"Party B (details)",t:"area",r:3,d:"Lumen Events Ltd.\nAdaeze Okafor\nLagos, Nigeria"},{k:"cl",l:"Clauses — blank line between clauses; first line of each = heading. Your own wording only.",t:"area",r:12,d:CLAUSES}]}
 };
@@ -101,11 +101,10 @@ function items(){const st=S[cur],el=$("items");el.innerHTML=st.items.map((it,i)=
 const HEAD=()=>`<div class="hd"><img class="lg" src="${DOCLOGO}" alt="Logo"><div class="ad">Osun, Nigeria.<small>gbcreativestudios@gmail.com<br>+2348169804368</small></div></div><div class="st"></div>`;
 const FOOT=`<div class="ft"><i></i><span><b>RC:</b> 9295569</span></div>`;
 function paper(){const t=cur,s=S[t],c=s.cur;let h=HEAD(),warn="";
- if(t==="receipt"){
-  const rows=s.items.map(i=>{const q=parseFloat(i.q)||0,u=mn(i.p);return{d:i.d,q,u,a:Math.round(q*u),e:i.p===""}});
-  const total=rows.reduce((a,r)=>a+r.a,0),paid=mn(s.paid),balance=Math.max(0,total-paid);
-  const full=total>0&&paid>=total,lines=(s.cd||"").split("\n").filter(Boolean);
-  const state=full?"PAID":"PART PAYMENT";
+if(t==="receipt"){
+  const paid=mn(s.paid),total=mn(s.tot),balance=Math.max(0,total-paid),hasTot=total>0;
+  const full=hasTot&&paid>=total,lines=(s.cd||"").split("\n").filter(Boolean);
+  const state=s.pay&&s.pay!=="Auto"?s.pay:(hasTot?(full?"FULL PAYMENT":"PART PAYMENT"):"PAYMENT RECEIVED");
   const info=(label,value)=>`<div><span>${label}</span><strong>${value||"—"}</strong></div>`;
   h+=`<div class="rc-head"><div><h1>RECEIPT</h1><div class="rc-doc-meta"><span>${esc(s.no)}</span><span>${dfmt(s.date)}</span></div></div></div>
   <div class="rc-amount"><span>AMOUNT RECEIVED</span><strong>${fm(paid,c)}</strong><em>${esc(amountWords(paid,c))}</em></div>
@@ -118,12 +117,12 @@ function paper(){const t=cur,s=S[t],c=s.cur;let h=HEAD(),warn="";
    ${s.acc?`<div class="rc-acc"><span>ACCOUNT</span><strong>${esc(s.acc)}</strong></div>`:""}
   </div>
   <div class="rc-for"><span class="rc-label">PAYMENT FOR</span>
-   <div class="rc-for-list">${rows.map((r,i)=>`<div><span>${r.q>1?`${r.q} × `:""}${esc(r.d)||"—"}</span>${i===0?`<strong>${state}</strong>`:""}</div>`).join("")}</div>
+   <div class="rc-for-list"><div><span>${nl(s.desc)||"—"}</span><strong>${esc(state)}</strong></div></div>
   </div>
-  <p class="rc-confirm">${full?"This receipt confirms that the amount shown above has been received in full.":`This receipt confirms a payment of ${fm(paid,c)} against invoice ${esc(s.inv)}. Remaining balance: ${fm(balance,c)}.`}</p>
+  <p class="rc-confirm">${full?"This receipt confirms that the invoice has been paid in full.":hasTot?`This receipt confirms a payment of ${fm(paid,c)} against invoice ${esc(s.inv)}. Remaining balance: ${fm(balance,c)}.`:`This receipt confirms a payment of ${fm(paid,c)} against invoice ${esc(s.inv)}.`}</p>
   <div class="rc-thanks">THANK YOU FOR YOUR PAYMENT.</div>`;
-  if(paid<=0||paid>total)warn="Amount received must be above zero and not more than the total.";
-  if(rows.some(r=>r.e))warn=(warn?warn+" ":"")+"Some lines have no price yet.";
+  if(paid<=0)warn="Amount received must be above zero.";
+  else if(hasTot&&paid>total)warn="Amount received is more than the invoice total.";
   $("paper").className="rc";$("paper").innerHTML=h+FOOT;
   const w=$("bw");if(w)w.innerHTML=warn?`<div class="warn">${esc(warn)}</div>`:"";fit();return
  }

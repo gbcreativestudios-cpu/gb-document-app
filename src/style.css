@@ -67,7 +67,7 @@ tr{break-inside:avoid}tbody tr:nth-child(1) td{height:41px}tbody tr:nth-child(2)
 #paper.rc .rc-meta{display:grid;grid-template-columns:235px 1fr 1fr;column-gap:32px;row-gap:22px;margin:44px 82px 0;flex:none}
 #paper.rc .rc-meta>div{min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:3px}
 #paper.rc .rc-meta strong{font-size:14px;font-weight:600;line-height:18px;overflow-wrap:anywhere}
-#paper.rc .rc-meta .rc-acc{grid-column:1}
+#paper.rc .rc-meta>div:nth-child(3),#paper.rc .rc-meta .rc-acc{grid-column:1}
 #paper.rc .rc-amount em{margin-top:8px;padding:0 28px;max-width:100%;font-style:normal;font-size:11px;font-weight:500;line-height:16px;letter-spacing:.06em;text-transform:uppercase;text-align:center;color:#666}
 #paper.rc .rc-meta p{margin:0;color:#666;font-size:12px;line-height:17px}
 #paper.rc .rc-for{margin:31px 82px 0;flex:none}
