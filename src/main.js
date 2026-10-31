@@ -29,6 +29,13 @@ const dfmt=v=>{if(!v)return"";const[y,m,d]=v.split("-");return`${MON[m-1]} ${+d}
 const today=()=>new Date().toISOString().slice(0,10);
 const mn=v=>Math.round((parseFloat(v)||0)*100);
 const fm=(m,c)=>{const neg=m<0;m=Math.abs(m);const w=m%100===0;return(neg?"-":"")+(SYM[c]||c+" ")+(m/100).toLocaleString("en-US",{minimumFractionDigits:w?0:2,maximumFractionDigits:2})};
+const ONES=["zero","one","two","three","four","five","six","seven","eight","nine","ten","eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen"],TENS=["","","twenty","thirty","forty","fifty","sixty","seventy","eighty","ninety"],SCALE=["","thousand","million","billion","trillion"];
+const below1000=n=>{const p=[];if(n>=100){p.push(ONES[Math.floor(n/100)]+" hundred");n%=100;if(n)p.push("and")}if(n>=20){p.push(TENS[Math.floor(n/10)]+(n%10?"-"+ONES[n%10]:""))}else if(n>0||!p.length)p.push(ONES[n]);return p.join(" ")};
+const intWords=n=>{if(n===0)return"zero";const g=[];let i=0;while(n>0){const x=n%1000;if(x)g.unshift(below1000(x)+(SCALE[i]?" "+SCALE[i]:""));n=Math.floor(n/1000);i++}return g.join(", ")};
+const CURW={NGN:["naira","kobo"],USD:["dollars","cents"],EUR:["euros","cents"],GBP:["pounds","pence"]};
+const cap=s=>s.replace(/(^|[\s-])([a-z]+)/g,(m,a,b)=>b==="and"?m:a+b[0].toUpperCase()+b.slice(1));
+const ONE={dollars:"dollar",euros:"euro",pounds:"pound",cents:"cent",pence:"penny"};
+function amountWords(m,c){m=Math.abs(m);const major=Math.floor(m/100),minor=m%100,[mj,mi]=CURW[c]||[c,""];const u=(n,w)=>n===1&&ONE[w]?ONE[w]:w;let t=intWords(major)+" "+u(major,mj);if(minor)t+=" and "+intWords(minor)+" "+u(minor,mi);return cap(t)+" Only"}
 const in14=()=>new Date(Date.now()+12096e5).toISOString().slice(0,10);
 const CL2=[{k:"cn",l:"Client name",d:"Mrs Adaeze Okafor"},{k:"cd",l:"Client details (one per line)",t:"area",r:3,d:"Lumen Events Ltd.\nLagos, Nigeria\n+234 801 234 5678"}];
 const CLAUSES=DEF.agreement_clauses;
@@ -101,14 +108,14 @@ function paper(){const t=cur,s=S[t],c=s.cur;let h=HEAD(),warn="";
   const state=full?"PAID":"PART PAYMENT";
   const info=(label,value)=>`<div><span>${label}</span><strong>${value||"—"}</strong></div>`;
   h+=`<div class="rc-head"><div><h1>RECEIPT</h1><div class="rc-doc-meta"><span>${esc(s.no)}</span><span>${dfmt(s.date)}</span></div></div></div>
-  <div class="rc-amount"><span>AMOUNT RECEIVED</span><strong>${fm(paid,c)}</strong></div>
+  <div class="rc-amount"><span>AMOUNT RECEIVED</span><strong>${fm(paid,c)}</strong><em>${esc(amountWords(paid,c))}</em></div>
   <div class="rc-meta">
    <div><span>RECEIVED FROM</span><strong>${esc(s.cn)||"—"}</strong>${lines.length?`<p>${lines.map(esc).join("<br>")}</p>`:""}</div>
    ${info("DATE RECEIVED",dfmt(s.date))}
    ${info("PAYMENT METHOD",esc(s.meth))}
-   ${info("REFERENCE",esc(s.ref))}
+   ${(s.ref||"").trim()?info("REFERENCE",esc(s.ref.trim())):""}
    ${info("INVOICE",esc(s.inv))}
-   ${s.acc?info("ACCOUNT",esc(s.acc)):""}
+   ${s.acc?`<div class="rc-acc"><span>ACCOUNT</span><strong>${esc(s.acc)}</strong></div>`:""}
   </div>
   <div class="rc-for"><span class="rc-label">PAYMENT FOR</span>
    <div class="rc-for-list">${rows.map((r,i)=>`<div><span>${r.q>1?`${r.q} × `:""}${esc(r.d)||"—"}</span>${i===0?`<strong>${state}</strong>`:""}</div>`).join("")}</div>

@@ -64,9 +64,11 @@ tr{break-inside:avoid}tbody tr:nth-child(1) td{height:41px}tbody tr:nth-child(2)
 #paper.rc .rc-amount{height:160px;margin:22px 75px 0;background:#eee;display:flex;flex-direction:column;align-items:center;justify-content:center;flex:none}
 #paper.rc .rc-amount span,.rc-label,#paper.rc .rc-meta>div>span{font-size:11px;letter-spacing:.08em;color:#777}
 #paper.rc .rc-amount strong{margin-top:13px;font-size:34px;font-weight:600;line-height:40px;letter-spacing:-.02em}
-#paper.rc .rc-meta{display:grid;grid-template-columns:1fr 1fr;column-gap:48px;row-gap:22px;margin:44px 82px 0;flex:none}
+#paper.rc .rc-meta{display:grid;grid-template-columns:235px 1fr 1fr;column-gap:32px;row-gap:22px;margin:44px 82px 0;flex:none}
 #paper.rc .rc-meta>div{min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:3px}
 #paper.rc .rc-meta strong{font-size:14px;font-weight:600;line-height:18px;overflow-wrap:anywhere}
+#paper.rc .rc-meta .rc-acc{grid-column:1}
+#paper.rc .rc-amount em{margin-top:8px;padding:0 28px;max-width:100%;font-style:normal;font-size:11px;font-weight:500;line-height:16px;letter-spacing:.06em;text-transform:uppercase;text-align:center;color:#666}
 #paper.rc .rc-meta p{margin:0;color:#666;font-size:12px;line-height:17px}
 #paper.rc .rc-for{margin:31px 82px 0;flex:none}
 #paper.rc .rc-label{display:block;margin-bottom:8px}
@@ -75,7 +77,7 @@ tr{break-inside:avoid}tbody tr:nth-child(1) td{height:41px}tbody tr:nth-child(2)
 #paper.rc .rc-for-list>div>span{overflow-wrap:anywhere}
 #paper.rc .rc-for-list strong{flex:none;font-size:12px;font-weight:600}
 #paper.rc .rc-confirm{margin:17px 82px 0;color:#666;font-size:11px;line-height:18px;flex:none}
-#paper.rc .rc-thanks{margin:17px 82px 0;color:#b48845;font-size:12px;font-weight:600;letter-spacing:.1em;line-height:18px;flex:none}
+#paper.rc .rc-thanks{margin:17px 82px 0;align-self:flex-start;background:linear-gradient(90deg,#3B76E5 0%,#6E24AA 45%,#8A2394 56%,#FC7737 100%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;font-size:12px;font-weight:600;letter-spacing:.1em;line-height:18px;flex:none}
 .ft{margin-top:auto;padding:30px 0 54px 75px;display:flex;align-items:center;gap:12px;font-size:14px;font-weight:300;flex:none;height:99px;align-items:flex-end}
 .ft i{width:15px;height:15px;background:linear-gradient(135deg,#6A2BB0,#9A2A85)}.ft b{font-weight:600}.ft span{line-height:15px}
 .ti{margin:58px 0 0 58px;font-size:40px;font-weight:500;letter-spacing:-.012em;line-height:48px;flex:none}
